@@ -2,7 +2,7 @@
   <div id="app">
     <!--显示当前路由组件-->
     <router-view/>
-    <FooterGuide/>
+    <FooterGuide v-show="$route.meta.isShow"/>
   </div>
 </template>
 
