@@ -29,22 +29,22 @@
           <div :class="{on: !loginWay}">
             <section>
               <section class="login_message">
-                <input type="tel" maxlength="11" placeholder="手机/邮箱/用户名">
+                <input type="tel" maxlength="11" placeholder="用户名" v-model="name">
               </section>
               <section class="login_verification">
-                <input type="tel" maxlength="8" placeholder="密码">
-                <div class="switch_button off">
-                  <div class="switch_circle"></div>
-                  <span class="switch_text">...</span>
+                <input :type="isShowPwd ? 'text' : 'password'" maxlength="8" placeholder="密码" v-model="pwd">
+                <div class="switch_button" :class="isShowPwd ? 'on' : 'off'" @click="isShowPwd = !isShowPwd">
+                  <div class="switch_circle" :class="{right: isShowPwd}"></div>
+                  <span class="switch_text">{{isShowPwd ? 'abc' : ''}}</span>
                 </div>
               </section>
               <section class="login_message">
-                <input type="text" maxlength="11" placeholder="验证码">
+                <input type="text" maxlength="11" placeholder="验证码" v-model="captcha">
                 <img class="get_verification" src="./img/captcha.svg" alt="captcha">
               </section>
             </section>
           </div>
-          <button class="login_submit">登录</button>
+          <button class="login_submit" @click.prevent="login">登录</button>
         </form>
         <a href="javascript:;" class="about_us">关于我们</a>
       </div>
@@ -60,11 +60,21 @@
     data () {
       return {
         // true为短信登录，false为密码登录
-        loginWay: false,
+        loginWay: true,
         // 手机号
         phone: '',
         // 倒计时剩余的时间
-        computeTime: 0
+        computeTime: 0,
+        // 是否显示密码
+        isShowPwd: false,
+        // 短信验证码
+        code: '',
+        // 用户名
+        name: '',
+        // 密码
+        pwd: '',
+        // 图形验证码
+        captcha: ''
       }
     },
 
@@ -87,6 +97,29 @@
             clearInterval(timer)
           }
         }, 1000)
+      },
+
+      // 请求登陆 + 前台表单验证
+      login () {
+        // 收集数据
+        const {loginWay, isRightPhone, phone, code, name, pwd, captcha} = this
+        // 短信验证
+        if(loginWay) {
+          if(!isRightPhone) {
+            return alert('请输入正确的手机号')
+          } else if (!/^\d{6}$/.test(code)) {
+            return alert('验证码必须是6位数字')
+          }
+          // 密码验证
+        } else {
+          if(!name.trim()) {
+            alert('必须指定用户名')
+          } else if (!pwd.trim()) {
+            alert('必须指定密码')
+          } else if (!/^.{4}$/.test(captcha)) {
+            alert('必须指定4位验证码')
+          }
+        }
       }
     }
   }
@@ -194,6 +227,8 @@
                   background #fff
                   box-shadow 0 2px 4px 0 rgba(0,0,0,.1)
                   transition transform .3s
+                  &.right
+                    transform translateX(27px)
             .login_hint
               margin-top 12px
               color #999
