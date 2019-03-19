@@ -2,6 +2,7 @@
 import Vue from 'vue'
 import App from './App'
 
+import store from './store'
 import router from './router'
 import Header from './components/Header/Header'
 
@@ -12,12 +13,13 @@ Vue.component('Header', Header)
 new Vue({
   el: '#app',
   // 注册组件
-  components: {
+  /*components: {
     App
   },
-  template: '<App/>',
-  // 去掉 #
-  mode: 'history',
+  template: '<App/>',*/
+  render: h => h(App),
   // 配置路由器
-  router
+  router,
+  // 配置vuex
+  store
 })

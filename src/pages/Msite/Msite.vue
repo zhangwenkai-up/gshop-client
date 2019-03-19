@@ -1,7 +1,7 @@
 <template>
   <section class="msite">
     <!--首页头部-->
-    <Header title="昌平区北七家宏福科技园">
+    <Header :title="address.name || '正在定位中...'">
       <span class="header_search" slot="left">
         <i class="iconfont icon-sousuo"></i>
       </span>
@@ -130,9 +130,14 @@
 </template>
 
 <script>
+  import {mapState} from 'vuex'
+
   import ShopList from '../../components/ShopList/ShopList'
 
   export default {
+    computed: {
+      ...mapState(['address'])
+    },
     components: {
       ShopList
     }

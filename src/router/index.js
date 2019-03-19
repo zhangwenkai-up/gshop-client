@@ -7,5 +7,7 @@ import routes from './routes'
 Vue.use(VueRouter)
 
 export default new VueRouter({
+  // 去掉 #
+  mode: 'history',
   routes
 })

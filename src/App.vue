@@ -10,6 +10,11 @@
   import FooterGuide from './components/FooterGuide/FooterGuide'
 
   export default {
+    mounted () {
+      // 异步获取当前地址
+      this.$store.dispatch('getAddress')
+    },
+
     components: {
       FooterGuide
     }
