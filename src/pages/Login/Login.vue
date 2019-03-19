@@ -12,8 +12,11 @@
         <form>
           <div :class="{on: loginWay}">
             <section class="login_message">
-              <input type="tel" maxlength="11" placeholder="手机号">
-              <button disabled="disabled" class="get_verification">获取验证码</button>
+              <input type="tel" maxlength="11" placeholder="手机号" v-model="phone">
+              <button :disabled="!isRightPhone || computeTime > 0" class="get_verification"
+                      :class="{right_phone_number: isRightPhone}" @click.prevent="sendCode">
+                {{computeTime > 0 ? `已发送(${computeTime}s)` : '获取验证码'}}
+              </button>
             </section>
             <section class="login_verification">
               <input type="tel" maxlength="8" placeholder="验证码">
@@ -57,9 +60,35 @@
     data () {
       return {
         // true为短信登录，false为密码登录
-        loginWay: false
+        loginWay: false,
+        // 手机号
+        phone: '',
+        // 倒计时剩余的时间
+        computeTime: 0
       }
     },
+
+    computed: {
+      // 验证是否是一个正确的手机号
+      isRightPhone () {
+        return /^1\d{10}$/.test(this.phone)
+      }
+    },
+
+    methods: {
+      // 发送验证 + 倒计时
+      sendCode() {
+        // 更新computeTime为30s
+        this.computeTime = 30
+        // 启动倒计时，每隔1s将computeTime减1，直到为0清除定时器
+        const timer = setInterval(() => {
+          this.computeTime--
+          if (this.computeTime === 0) {
+            clearInterval(timer)
+          }
+        }, 1000)
+      }
+    }
   }
 </script>
 
@@ -124,6 +153,8 @@
                 color #ccc
                 font-size 14px
                 background transparent
+                &.right_phone_number
+                  color black
             .login_verification
               position relative
               margin-top 16px
