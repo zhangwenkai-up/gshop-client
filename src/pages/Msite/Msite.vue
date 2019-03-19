@@ -135,6 +135,12 @@
   import ShopList from '../../components/ShopList/ShopList'
 
   export default {
+    mounted () {
+      // 异步获取categorys
+      this.$store.dispatch('getCategorys')
+      // 异步获取shops
+      this.$store.dispatch('getShops')
+    },
     computed: {
       ...mapState(['address'])
     },
