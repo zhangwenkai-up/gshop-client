@@ -40,7 +40,8 @@
               </section>
               <section class="login_message">
                 <input type="text" maxlength="11" placeholder="验证码" v-model="captcha">
-                <img class="get_verification" src="./img/captcha.svg" alt="captcha">
+                <img class="get_verification" src="http://localhost:5000/captcha" alt="captcha"
+                     ref='captcha' @click="updateCaptcha">
               </section>
             </section>
           </div>
@@ -120,6 +121,12 @@
             alert('必须指定4位验证码')
           }
         }
+      },
+
+      // 更新图片验证码
+      updateCaptcha () {
+        // 一旦给img指定了新的src值，浏览器就会自动发送新的请求并获取图片
+        this.$refs.captcha.src = 'http://localhost:5000/captcha?time=' + Date.now()
       }
     }
   }

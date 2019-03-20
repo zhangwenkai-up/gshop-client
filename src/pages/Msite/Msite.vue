@@ -44,6 +44,7 @@
   import Swiper from 'swiper'
   import 'swiper/dist/css/swiper.css'
   import ShopList from '../../components/ShopList/ShopList.vue'
+
   export default {
     // 初始显示之后
     mounted () {
